@@ -1,0 +1,4 @@
+trial
+.env
+# Vector DB
+chroma_db/dynamic_csv/*.sqlite3
