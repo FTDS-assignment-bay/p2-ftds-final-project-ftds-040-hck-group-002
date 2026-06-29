@@ -1,0 +1,99 @@
+{
+    "candidate": {
+        "name": "Prayoga Rasyid Sudrajat",
+        "target_role": "Data Scientist",
+        "professional_summary": "Results-oriented Physics graduate with strong analytical foundation, manufacturing experience, and expertise in Python, SQL, ETL, and machine learning, seeking to leverage data-driven insights for business optimization."
+    },
+    "scores": {
+        "cv_quality": 85,
+        "job_relevance": 80,
+        "overall_readiness": 82
+    },
+    "salary_prediction": {
+        "currency": "IDR",
+        "average": 8500000,
+        "minimum": 6000000,
+        "maximum": 12000000
+    },
+    "top_jobs": [
+        {
+            "rank": 1,
+            "job_title": "Data Scientist",
+            "company": "PT Panasonic Gobel Energy Indonesia (PECGI)",
+            "industry": "Manufacturing",
+            "location": "Cikarang, Bekasi Regency",
+            "match_score": 90,
+            "estimated_salary": 10000000,
+            "reason": "Strong alignment with candidate's background in manufacturing improvement, production data analysis, and ETL processes gained at PT Asahimas Flat Glass."
+        },
+        {
+            "rank": 2,
+            "job_title": "Data Engineering Intern",
+            "company": "Danone Indonesia",
+            "industry": "FMCG",
+            "location": "South Jakarta, Jakarta",
+            "match_score": 75,
+            "estimated_salary": 6000000,
+            "reason": "Candidate has strong visualization skills (Tableau, Looker Studio) and database experience, which are highly relevant for dashboarding and reporting requirements."
+        }
+    ],
+    "skill_analysis": {
+        "matched_skills": [
+            {
+                "skill": "Python",
+                "score": 90
+            },
+            {
+                "skill": "SQL",
+                "score": 85
+            },
+            {
+                "skill": "Data Visualization",
+                "score": 85
+            },
+            {
+                "skill": "ETL",
+                "score": 80
+            }
+        ],
+        "missing_skills": [
+            "Power BI",
+            "Cloud Infrastructure (AWS/Azure)",
+            "Statistical Process Control (SPC)"
+        ],
+        "market_demand_skills": [
+            {
+                "skill": "Python",
+                "demand_score": 95
+            },
+            {
+                "skill": "SQL",
+                "demand_score": 92
+            },
+            {
+                "skill": "Power BI",
+                "demand_score": 88
+            }
+        ]
+    },
+    "recommendations": [
+        {
+            "priority": "High",
+            "category": "Skill Development",
+            "title": "Learn Power BI",
+            "description": "While skilled in Tableau and Looker Studio, adding Power BI to your toolkit will increase eligibility for major corporate roles like Danone."
+        },
+        {
+            "priority": "Medium",
+            "category": "Portfolio",
+            "title": "Industrial Case Study",
+            "description": "Create a project specifically focusing on production efficiency or predictive maintenance in manufacturing to directly appeal to companies like Panasonic."
+        },
+        {
+            "priority": "Low",
+            "category": "Certification",
+            "title": "Cloud Certification",
+            "description": "Consider obtaining a cloud associate certification (AWS or Azure) to complement your existing ETL and data warehouse skills."
+        }
+    ]
+}
