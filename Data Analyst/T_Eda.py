@@ -48,7 +48,7 @@ if uploaded_file is not None:
 
     # TAB 2: VISUALISASI
     with tab_viz:
-        st.header("Visualisasi Data Otomatis")
+        st.header("Visualisasi Data")
         st.markdown("---")
         
         # ANALISIS ROLE PEKERJAAN
@@ -104,12 +104,10 @@ if uploaded_file is not None:
                     
                 # Ekstrak semua format angka ribuan
                 nums = re.findall(r'\b\d{1,3}(?:\.\d{3})*(?:,\d+)?\b', val)
-                
                 # Buang titik agar terbaca sebagai float
                 nums = [float(n.replace('.', '').replace(',', '.')) for n in nums]
-                
                 if len(nums) > 0:
-                    # Jika ada 2 angka (Range "Dari - Sampai"), ambil nilai tengah (Rata-rata)
+                # Jika ada 2 angka (Range "Dari - Sampai"), ambil nilai tengah (Rata-rata)
                     return sum(nums) / len(nums)
                 return None
                 
