@@ -1,0 +1,109 @@
+{
+    "candidate": {
+        "name": "Prayoga Rasyid Sudrajat",
+        "target_role": "Data Analyst",
+        "professional_summary": "Physics graduate from Universitas Padjadjaran with a strong analytical foundation and hands-on experience in manufacturing data engineering and analysis. Proficient in Python, SQL, Tableau, and ETL processes, currently upskilling via Hacktiv8 Data Science Bootcamp."
+    },
+    "scores": {
+        "cv_quality": 85,
+        "job_relevance": 90,
+        "overall_readiness": 88
+    },
+    "salary_prediction": {
+        "currency": "IDR",
+        "average": 8500000,
+        "minimum": 6000000,
+        "maximum": 12000000
+    },
+    "top_jobs": [
+        {
+            "rank": 1,
+            "job_title": "IT Data Analyst (Internship)",
+            "company": "Unknown",
+            "industry": "Unknown",
+            "location": "Unknown",
+            "match_score": 95,
+            "estimated_salary": 0,
+            "reason": "Strong alignment with the required stack (SQL, Python, Tableau) and emphasis on ETL processes which matches the candidate's internship experience."
+        },
+        {
+            "rank": 2,
+            "job_title": "Data Analyst",
+            "company": "Unknown",
+            "industry": "Unknown",
+            "location": "Central Jakarta",
+            "match_score": 88,
+            "estimated_salary": 6400000,
+            "reason": "Candidate meets all technical requirements, specifically data visualization (Tableau) and analytical reporting capabilities."
+        },
+        {
+            "rank": 3,
+            "job_title": "Data Analyst",
+            "company": "Unknown",
+            "industry": "Computers and Electronics Manufacturing",
+            "location": "Unknown",
+            "match_score": 85,
+            "estimated_salary": 0,
+            "reason": "Directly matches the candidate's previous experience in the manufacturing sector and interest in applied machine learning."
+        }
+    ],
+    "skill_analysis": {
+        "matched_skills": [
+            {
+                "skill": "SQL",
+                "score": 95
+            },
+            {
+                "skill": "Python",
+                "score": 90
+            },
+            {
+                "skill": "Tableau",
+                "score": 85
+            },
+            {
+                "skill": "ETL",
+                "score": 90
+            }
+        ],
+        "missing_skills": [
+            "Snowflake",
+            "Redshift",
+            "Advanced Stakeholder Management"
+        ],
+        "market_demand_skills": [
+            {
+                "skill": "SQL",
+                "demand_score": 95
+            },
+            {
+                "skill": "Python",
+                "demand_score": 90
+            },
+            {
+                "skill": "Tableau/Power BI",
+                "demand_score": 85
+            }
+        ]
+    },
+    "recommendations": [
+        {
+            "priority": "High",
+            "category": "Skill Enhancement",
+            "title": "Learn Power BI",
+            "description": "While you are proficient in Tableau and Looker, many roles in Indonesia specifically request Power BI for internal reporting."
+        },
+        {
+            "priority": "Medium",
+            "category": "Portfolio",
+            "title": "Expand Business Use Cases",
+            "description": "Highlight the business impact of your projects (e.g., cost savings or time efficiency percentages) more explicitly to align with Senior Data Analyst expectations."
+        },
+        {
+            "priority": "Low",
+            "category": "Certification",
+            "title": "Cloud Data Warehousing",
+            "description": "Add a certification in Google BigQuery or AWS Redshift to stand out for mid-to-senior level roles."
+        }
+    ]
+}

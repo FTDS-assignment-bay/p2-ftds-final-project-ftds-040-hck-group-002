@@ -1,6 +1,8 @@
 import streamlit as st
+import os
 import json
 import math
+from job_finder import match_cv_to_jobs, extract_cv
 
 st.set_page_config(
     page_title="AI Career Advisor",
@@ -146,7 +148,6 @@ def rec_card(rec):
   <div class="rec-desc">{rec['description']}</div>
 </div>"""
 
-
 # ── Load data ─────────────────────────────────────────────────────────────────
 
 def load_json(src):
@@ -171,18 +172,21 @@ st.markdown("""
 c0a, c0b = st.columns([1, 1], gap="large")
 with c0a:
     st.markdown('<div class="section-label">📄 CV INPUT (JSON)</div>', unsafe_allow_html=True)
-    uploaded = st.file_uploader("Upload JSON hasil analisis CV", type=["json"],
+    uploaded = st.file_uploader("Upload JSON hasil analisis CV", type=["pdf"],
                                 label_visibility="collapsed")
 with c0b:
     st.markdown('<div class="section-label">🎯 FILTER ROLE</div>', unsafe_allow_html=True)
-    role_options = ["Data Scientist","Data Engineer","Data Analyst","AI Engineer","ML Engineer"]
-    st.selectbox("Pilih role target", role_options, label_visibility="collapsed")
+    role_options = ["Data Scientist","Data Engineer","Data Analyst","AI Engineer"]
+    role_user = st.selectbox("Pilih role target", role_options, label_visibility="collapsed")
 
+path = ""
+if uploaded is not None:
+    match_cv_to_jobs(uploaded, role_user)
 st.markdown('<hr class="aica-divider">', unsafe_allow_html=True)
 
 # Load data
 try:
-    data = load_json(uploaded) if uploaded else load_json("final_project_output.txt")
+    data = load_json("output.json")
 except Exception as e:
     st.error(f"Gagal memuat data: {e}")
     st.stop()
@@ -212,9 +216,7 @@ with c1a:
     st.markdown('<div class="section-label">📊 CV SCORE</div>', unsafe_allow_html=True)
     st.markdown(f"""
 <div class="score-wrap">
-  <div><div class="score-num">{sc['cv_quality']}</div><div class="score-lbl">CV Quality</div></div>
-  <div><div class="score-num">{sc['job_relevance']}</div><div class="score-lbl">Job Relevance</div></div>
-  <div><div class="score-num">{sc['overall_readiness']}</div><div class="score-lbl">Overall Readiness</div></div>
+  <div><div class="score-num">{sc['cv_quality']}</div><div class="score-lbl">CV Quality</div></div></div>
 </div>""", unsafe_allow_html=True)
 
 with c1b:

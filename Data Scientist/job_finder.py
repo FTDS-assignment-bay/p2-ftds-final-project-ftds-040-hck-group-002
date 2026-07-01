@@ -13,6 +13,8 @@ from pdfminer.high_level import extract_text
 import re
 from langchain_core.messages import SystemMessage
 from langchain_core.prompts import HumanMessagePromptTemplate, ChatPromptTemplate, PromptTemplate
+from io import BytesIO
+import json
 
 # Load the `.env` file that contains secret variables like API Keys
 load_dotenv()
@@ -27,7 +29,7 @@ client = genai.Client(api_key=GEMINI_API_KEY)
 EMBEDDING_MODEL = "models/gemini-embedding-2-preview"
 CHAT_MODEL = "gemini-3.1-flash-lite-preview"
 EMBEDDING_MODEL_HF = "sentence-transformers/all-MiniLM-L6-v2"
-SPLITTER = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
+SPLITTER = RecursiveCharacterTextSplitter(chunk_size=3000, chunk_overlap=100)
 
 # Embedding
 ## Using Gemini
@@ -43,6 +45,11 @@ embedding_model_hf = HuggingFaceEmbeddings(
   encode_kwargs={'normalize_embeddings': True} # Additional options to specify that the embeddings should be normalized (converted to unit vectors) after encoding.
 )
 
+chat_model = ChatGoogleGenerativeAI(
+            google_api_key=GEMINI_API_KEY,
+            model=CHAT_MODEL
+        )
+
 # Process job opening data from csv
 def job_processing(file_path, meta_data_cols: list):
     """
@@ -52,7 +59,7 @@ def job_processing(file_path, meta_data_cols: list):
         - file_path: CSV document of job listings
         - meta_data_cols: Column names that will be used for filtering 
     """
-    loader_csv = CSVLoader(file_path, metadata_columns=meta_data_cols)
+    loader_csv = CSVLoader(file_path, metadata_columns=meta_data_cols, encoding="utf-8", csv_args={"delimiter": ","})
     docs = loader_csv.load()
     all_contents = [post for post in docs]
     chunks = SPLITTER.split_documents(all_contents)
@@ -66,21 +73,16 @@ def job_processing(file_path, meta_data_cols: list):
         
     print(f"Dynamic index updated: {len(chunks)} chunks")
 
-chat_model = ChatGoogleGenerativeAI(
-            google_api_key=GEMINI_API_KEY,
-            model=CHAT_MODEL
-        )
-
-def extract_cv(cv_path: str) -> str:
+def extract_cv(uploaded_file) -> str:
     """
     Extract CV from PDF to text.
 
-    Arguments:
-        - cv_path: file path to CV document.
-    Return:
-        - cv_text: CV in form of text
+    Arguments
+        uploaded: file uploaded in streamlit.
+    Return
+        cv_text: CV in form of text
     """
-    loader = extract_text(cv_path) # Load file
+    loader = extract_text(BytesIO(uploaded_file.getvalue())) # Load file
 
     # Clean file
     cv_text = loader.replace("\xa0", " ") # Remove non-breaking space
@@ -90,8 +92,14 @@ def extract_cv(cv_path: str) -> str:
     return cv_text
 
 # Match pipeline
-# Match pipeline
 def match_cv_to_jobs(cv_path: str, value_to_extract: str):
+    """
+    Process CV and job vacancy dataset, then matches it. Saves the result in a form of json then saves it accordingly.
+
+    Arguments:
+    - cv_path: file path of CV in pdf format.
+    - value_to_extract: intended position that will be filtered. 
+    """
     cv_profile = extract_cv(cv_path)
             
     # Load index  
@@ -100,22 +108,17 @@ def match_cv_to_jobs(cv_path: str, value_to_extract: str):
         embedding_function=embedding_model_hf
     )
 
+    # Find matching job
     query = f"""
-        Position:
+        Find at least two of the most suitable job post based on candidate's skills and experience for
+        Role:
         {value_to_extract}
 
         Profile candidate:
         {cv_profile}
     """
-    # Find matching job
-    job_matches = dynamic_store.similarity_search(query=query, k=5)
+    job_matches = dynamic_store.similarity_search(query=query, k=5, filter={"job_category": value_to_extract})
     jobs_text = "\n\n---\n\n".join([d.page_content for d in job_matches]) # Formatting
- 
-    # LLM
-    chat_model = ChatGoogleGenerativeAI(
-            google_api_key=GEMINI_API_KEY,
-            model=CHAT_MODEL
-        )
     
     prompt = PromptTemplate.from_template("""
         You are an AI Career Advisor specializing in resume evaluation and job matching.
@@ -128,10 +131,13 @@ def match_cv_to_jobs(cv_path: str, value_to_extract: str):
         - Do NOT add any explanation before or after the JSON.
         - Follow the schema exactly.
         - Do NOT omit any key.
-        - If information is unavailable, use null.
+        - If information is unavailable, fill with Unknown.
         - Integer fields must contain only numbers.
         - Percentage values must be integers between 0 and 100.
         - Arrays must always exist, even if empty.
+        - Return 'top_jobs' from retrieved Job Vacancies ONLY.
+        - Try to always return data based on existing knowledge of cv_profile and job_listings.
+        - Return 'cv_quality' based on 'cv_profile' with Application Tracking System (ATS) scoring method.
 
         Candidate Profile:
         {cv_profile}
@@ -211,9 +217,14 @@ def match_cv_to_jobs(cv_path: str, value_to_extract: str):
         "job_listings": jobs_text,
         "value_to_extract": value_to_extract
     })
-
-    return "\n".join(
+    
+    response_json = "".join(
                 part["text"]
                 for part in response.content
                 if part["type"] == "text"
             )
+    
+    data = json.loads(response_json)
+
+    with open("output.json", "w") as file:
+        json.dump(data, file, indent=4)
