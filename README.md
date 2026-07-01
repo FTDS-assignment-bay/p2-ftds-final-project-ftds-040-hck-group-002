@@ -3,7 +3,8 @@
 
 **Insert Logo Here**
 
----
+<img width="2000" height="2000" alt="2" src="https://github.com/user-attachments/assets/f983fe2d-b86d-4955-844a-10772bd0d861" />
+
 
 ## Project Background
 
